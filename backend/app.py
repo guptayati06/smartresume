@@ -203,13 +203,13 @@ def analyze_resumes():
     Supports multipart/form-data file uploads or JSON payload.
     """
     
-if request.is_json:
-    payload = request.get_json(silent=True) or {}
-    job_text = payload.get("job_description")
-else:
-    job_text = request.form.get("job_description")
+    if request.is_json:
+        payload = request.get_json(silent=True) or {}
+        job_text = payload.get("job_description")
+    else:
+        job_text = request.form.get("job_description")
     
-if not job_text or not job_text.strip():
+    if not job_text or not job_text.strip():
         job_text = CURRENT_STATE["job_description"]
 
     skill_weight = float(request.form.get("skill_weight", 0.65) if not request.is_json else request.json.get("skill_weight", 0.65))
